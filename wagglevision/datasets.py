@@ -25,6 +25,8 @@ class CloudDataset(Dataset):
         name = self.files[index]
         image = Image.open(
             Path(self.root, 'images', name + '.jpg')).convert('RGB')
+        # the label images have already been converted to 8-bit and have
+        # pixel values in [0,255] which represent the class
         label = Image.open(Path(self.root, 'labels', name + '.png'))
         if self.transforms is not None:
             image, label = self.transforms(image, label)
