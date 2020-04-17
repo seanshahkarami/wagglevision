@@ -6,13 +6,14 @@ from PIL import Image
 
 transform = Compose([
     ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
-    Resize(224, interpolation=Image.NEAREST),
+    Resize(224),
     ToTensor(),
     Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
 
 
 label_transform = Compose([
+    # NEAREST is needed to preserve pixel classes
     Resize(224, interpolation=Image.NEAREST),
 ])
 
