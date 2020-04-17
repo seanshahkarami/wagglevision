@@ -14,7 +14,6 @@ transform = Compose([
 
 label_transform = Compose([
     Resize(224, interpolation=Image.NEAREST),
-    ToTensor(),
 ])
 
 

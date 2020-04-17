@@ -1,3 +1,5 @@
+import torch
+import numpy as np
 from torch.utils.data import Dataset
 from pathlib import Path
 from PIL import Image
@@ -21,8 +23,10 @@ class CloudDataset(Dataset):
 
     def __getitem__(self, index):
         name = self.files[index]
-        image = Image.open(Path(self.root, 'images', name + '.jpg')).convert('RGB')
+        image = Image.open(
+            Path(self.root, 'images', name + '.jpg')).convert('RGB')
         label = Image.open(Path(self.root, 'labels', name + '.png'))
         if self.transforms is not None:
             image, label = self.transforms(image, label)
+        label = torch.tensor(np.array(label, dtype=np.uint8)).long()
         return image, label
