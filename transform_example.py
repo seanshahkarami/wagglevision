@@ -22,12 +22,20 @@ def transforms(image, label):
     return transform(image), label_transform(label)
 
 
-train_data = CloudDataset(
-    root='data', image_set='train', transforms=transforms)
-train_loader = DataLoader(train_data, batch_size=25,
-                          shuffle=True, pin_memory=True)
+train_data = CloudDataset(root='data',
+                          image_set='train',
+                          transforms=transforms)
 
-val_data = CloudDataset(
-    root='data', image_set='val', transforms=transforms)
-val_loader = DataLoader(val_data, batch_size=25,
-                        shuffle=False, pin_memory=True)
+train_loader = DataLoader(train_data,
+                          batch_size=25,
+                          shuffle=True,
+                          pin_memory=True)
+
+val_data = CloudDataset(root='data',
+                        image_set='val',
+                        transforms=transforms)
+
+val_loader = DataLoader(val_data,
+                        batch_size=25,
+                        shuffle=False,
+                        pin_memory=True)
