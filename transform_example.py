@@ -12,14 +12,14 @@ transform = Compose([
 ])
 
 
-target_transform = Compose([
+label_transform = Compose([
     Resize(224, interpolation=Image.NEAREST),
     ToTensor(),
 ])
 
 
 def transforms(image, label):
-    return transform(image), target_transform(label)
+    return transform(image), label_transform(label)
 
 
 train_data = CloudDataset(
