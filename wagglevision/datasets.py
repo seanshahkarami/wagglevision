@@ -6,8 +6,6 @@ from torchvision.datasets.utils import download_and_extract_archive
 dataset_url = 'https://web.lcrc.anl.gov/public/waggle/datasets/WaggleClouds.tar.gz'
 
 
-# we could make this available and do stuff like automatically download things now...
-
 class CloudDataset(Dataset):
 
     def __init__(self, root, image_set='train', transforms=None, download=True):
@@ -23,19 +21,8 @@ class CloudDataset(Dataset):
 
     def __getitem__(self, index):
         name = self.files[index]
-
-        image = Image.open(Path(self.root, 'images', name + '.jpg'))
-        image = image.convert('RGB')
-
+        image = Image.open(Path(self.root, 'images', name + '.jpg')).convert('RGB')
         label = Image.open(Path(self.root, 'labels', name + '.png'))
-        label = label.convert('P')
-
         if self.transforms is not None:
             image, label = self.transforms(image, label)
-
-        # TODO should be fixed in mask files
-        label[label < 0.7] = 0
-        label[label >= 0.7] = 1
-        label = label.long()
-
         return image, label

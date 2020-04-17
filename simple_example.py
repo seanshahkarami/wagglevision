@@ -6,7 +6,10 @@ train_data = CloudDataset('data', image_set='train', download=True)
 val_data = CloudDataset('data', image_set='val', download=False)
 
 print(len(train_data))
+print(train_data[0])
+
 print(len(val_data))
+print(val_data[0])
 
 # test models
 net = fcn_resnet101(pretrained=True, num_classes=2)
