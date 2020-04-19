@@ -28,12 +28,13 @@ def transforms(image, label):
 train_data = CloudDataset(root='data', image_set='train',
                           transforms=transforms, download=True)
 
-train_loader = DataLoader(train_data, batch_size=1, shuffle=True)
+train_loader = DataLoader(train_data, batch_size=8,
+                          shuffle=True, num_workers=4)
 
 val_data = CloudDataset(root='data', image_set='val',
                         transforms=transforms, download=False)
 
-val_loader = DataLoader(val_data, batch_size=1, shuffle=False)
+val_loader = DataLoader(val_data, batch_size=8, shuffle=False, num_workers=4)
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f'device: {device}')
