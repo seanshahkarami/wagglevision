@@ -1,5 +1,4 @@
 from wagglevision.datasets import CloudDataset
-from wagglevision.models import fcn_resnet101
 import matplotlib.pyplot as plt
 
 # test datasets
