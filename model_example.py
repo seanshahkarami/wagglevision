@@ -1,14 +1,13 @@
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from torchvision.transforms import Compose, Normalize, ToTensor, Resize, ColorJitter
+from torchvision.transforms import Compose, Normalize, ToTensor, Resize
 from wagglevision.datasets import CloudDataset
 from wagglevision.models import fcn_resnet101
 from PIL import Image
 
 
 transform = Compose([
-    ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
     Resize(112),
     ToTensor(),
     Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
@@ -30,15 +29,15 @@ train_data = CloudDataset(root='data',
                           transforms=transforms,
                           download=True)
 
-val_data = CloudDataset(root='data',
-                        image_set='val',
-                        transforms=transforms,
-                        download=False)
-
 train_loader = DataLoader(train_data,
                           batch_size=1,
                           shuffle=True,
                           pin_memory=True)
+
+val_data = CloudDataset(root='data',
+                        image_set='val',
+                        transforms=transforms,
+                        download=False)
 
 val_loader = DataLoader(val_data,
                         batch_size=1,
