@@ -24,25 +24,15 @@ def transforms(image, label):
     return transform(image), label_transform(label)
 
 
-train_data = CloudDataset(root='data',
-                          image_set='train',
-                          transforms=transforms,
-                          download=True)
+train_data = CloudDataset(root='data', image_set='train',
+                          transforms=transforms, download=True)
 
-train_loader = DataLoader(train_data,
-                          batch_size=1,
-                          shuffle=True,
-                          pin_memory=True)
+train_loader = DataLoader(train_data, batch_size=1, shuffle=True)
 
-val_data = CloudDataset(root='data',
-                        image_set='val',
-                        transforms=transforms,
-                        download=False)
+val_data = CloudDataset(root='data', image_set='val',
+                        transforms=transforms, download=False)
 
-val_loader = DataLoader(val_data,
-                        batch_size=1,
-                        shuffle=False,
-                        pin_memory=True)
+val_loader = DataLoader(val_data, batch_size=1, shuffle=False)
 
 net = fcn_resnet101(pretrained=True, num_classes=2)
 
