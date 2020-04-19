@@ -2,11 +2,19 @@ import torch.nn as nn
 from torchvision.models.segmentation import fcn_resnet101 as _fcn_resnet101
 
 
-# modified fcn_resnet101 which is able to swap out the last class layer on the pretrained
-# model
+class UnwrappedFCN(nn.Module):
+
+    def __init__(self, net):
+        super().__init__()
+        self.net = net
+
+    def forward(self, x):
+        return self.net(x)['out']
+
+
 def fcn_resnet101(pretrained=False, num_classes=2):
     if pretrained is False:
-        return _fcn_resnet101(pretrained=False, num_classes=num_classes)
+        return UnwrappedFCN(_fcn_resnet101(pretrained=False, num_classes=num_classes))
 
     net = _fcn_resnet101(pretrained=True)
 
@@ -16,7 +24,6 @@ def fcn_resnet101(pretrained=False, num_classes=2):
         in_channels=512,
         out_channels=num_classes,
         kernel_size=1,
-        stride=1,
-    )
+        stride=1)
 
-    return net
+    return UnwrappedFCN(net)
