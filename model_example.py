@@ -35,7 +35,11 @@ val_data = CloudDataset(root='data', image_set='val',
 
 val_loader = DataLoader(val_data, batch_size=1, shuffle=False)
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+print(f'device: {device}')
+
 net = fcn_resnet101(pretrained=True, num_classes=2)
+net = net.to(device)
 
 learner = optim.Adam(net.parameters(), lr=1e-2)
 lossfunc = nn.CrossEntropyLoss()
@@ -44,6 +48,9 @@ lossfunc = nn.CrossEntropyLoss()
 net.train()
 
 for image, label in train_loader:
+    image = image.to(device)
+    label = label.to(device)
+
     learner.zero_grad()
     loss = lossfunc(net(image), label)
     loss.backward()
@@ -57,6 +64,9 @@ with torch.no_grad():
     net.eval()
 
     for image, label in val_loader:
+        image = image.to(device)
+        label = label.to(device)
+
         predict = net(image).argmax(1)
         acc_sum += (predict == label).float().mean()
 
