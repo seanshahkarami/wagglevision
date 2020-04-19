@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
@@ -39,10 +40,25 @@ net = fcn_resnet101(pretrained=True, num_classes=2)
 learner = optim.Adam(net.parameters(), lr=1e-2)
 lossfunc = nn.CrossEntropyLoss()
 
-# do single iteration through train dataset
+# do single train interation
+net.train()
+
 for image, label in train_loader:
     learner.zero_grad()
     loss = lossfunc(net(image), label)
     loss.backward()
     learner.step()
     print('loss', loss)
+
+# do single eval iteration
+acc_sum = 0.0
+
+with torch.no_grad():
+    net.eval()
+
+    for image, label in val_loader:
+        predict = net(image).argmax(1)
+        acc_sum += (predict == label).float().mean()
+
+val_acc = acc_sum / len(val_loader)
+print('val_acc', val_acc)
