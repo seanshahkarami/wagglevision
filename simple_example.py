@@ -10,6 +10,3 @@ print(train_data[0])
 
 print(len(val_data))
 print(val_data[0])
-
-# test models
-net = fcn_resnet101(pretrained=True, num_classes=2)
